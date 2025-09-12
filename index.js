@@ -1,8 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser'
 import { pool } from './db.js'
-import dotenv from 'dotenv'
 import cors from 'cors'
+import tareasRoutes from './routesAndControllers/routes.js';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
+/*
 const pruebaConexion = async () => {
   try {
     const res = await pool.query('SELECT NOW()');
@@ -20,6 +22,7 @@ const pruebaConexion = async () => {
   }
 };
 pruebaConexion();
+*/
 
 // Rutas
 app.use("/tareas", tareasRoutes);
@@ -39,3 +42,4 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
   console.log('Servidor en http://localhost:3000');
 });
+export default app;

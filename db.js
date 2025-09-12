@@ -6,10 +6,5 @@ export const pool = new Pool({
   host: process.env.DB_HOST,
   database: process.env.DB_NAME, 
   password: process.env.DB_PASS,
-  port: process.env.DB_PORT || 5432,
+  port: Number(process.env.DB_PORT) || 5432,
 });
-
-pool
-  .connect()
-  .then(() => console.log("Conectado a la base de datos"))
-  .catch((err) => console.error("Error al conectar a la base de datos", err));

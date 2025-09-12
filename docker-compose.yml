@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: sami_nodejs
-      POSTGRES_PASSWORD: nodejs123
+      POSTGRES_PASSWORD: "nodejs123"
       POSTGRES_DB: API_express_nodejs
     ports:
       - "5432:5432"
