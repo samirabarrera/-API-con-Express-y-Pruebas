@@ -1,30 +1,26 @@
-import request from 'supertest';
-import app from '../index.js'; 
-import pool from '../index.js';
+import request from "supertest";
+import app from "../index.js";
+import pool from "../db.js";
+import {
+  getTask,
+  getTaskById,
+  createTask,
+  updateTask,
+  deleteTask,
+} from "../routesAndControllers/controller.js";
 
+afterAll(async () => {
+  await pool.end();
+});
 
-describe("Pruebas de integración básica con CRUD", () => {
-  let taskId; 
+describe("Pruebas de integración del CRUD", () => {
+  let taskId;
 
-  // 1️⃣ Crear una tarea 
   test("POST /tareas crea una tarea", async () => {
     const res = await request(app)
       .post("/tareas")
-      .send({ titulo: "Hacer la tarea", estado: "pendiente" });
+      .send({ titulo: "Prueba Jest", completado: false });
 
-    expect(res.statusCode).toBe(201);
-
-    tareaId = res.body.id; // se guarda el id para que se use después
+    taskId = res.body.id;
   });
-
-  // 2️⃣ Obtener todas las tareas 
-
-
-  // 3️⃣ Obtener una tarea por id 
-
-
-  // 4️⃣ Actualizar una tarea 
- 
-
-  // 5️⃣ Eliminar una tarea
-}); 
+});

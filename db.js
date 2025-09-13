@@ -8,3 +8,5 @@ export const pool = new Pool({
   password: process.env.DB_PASS,
   port: Number(process.env.DB_PORT) || 5432,
 });
+
+export default pool;

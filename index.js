@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-/*
+
 const pruebaConexion = async () => {
   try {
     const res = await pool.query("SELECT NOW()");
@@ -21,9 +21,6 @@ const pruebaConexion = async () => {
     console.error("Fallo en prueba de conexión:", err);
   }
 };
-
-pruebaConexion();
-*/
 
 // Rutas
 app.use("/tareas", tareasRoutes);
