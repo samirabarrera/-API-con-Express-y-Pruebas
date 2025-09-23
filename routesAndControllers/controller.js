@@ -1,6 +1,19 @@
 import { pool } from "../db.js";
-import dotenv from 'dotenv';
-dotenv.config();
+
+//POST CON LA RUTA /tareas
+export const createTask = async (req, res, next) => {
+  const { titulo, descripcion, estado } = req.body;
+  try {
+    const result = await pool.query(
+      "INSERT INTO public.tareas (titulo, descripcion, estado) VALUES ($1, $2, $3) RETURNING *",
+      [titulo, descripcion, estado]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Error al crear tarea:", err.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 // GET
 export const getTask = async (req, res, next) => {
@@ -8,6 +21,7 @@ export const getTask = async (req, res, next) => {
     const result = await pool.query("SELECT * FROM tareas ORDER BY id ASC");
     res.json(result.rows);
   } catch (err) {
+    console.error("Error obteniendo tareas")
     next(err);
   }
 };
@@ -16,24 +30,14 @@ export const getTask = async (req, res, next) => {
 export const getTaskById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await pool.query("SELECT * FROM tareas WHERE id = $1", [id]);
-    if (result.rows.lenght === 0)
+    const result = await pool.query(
+      "SELECT * FROM tareas WHERE id = $1", [id]);
+    if (result.rows.length === 0)
       return res.status(404).json({ error: "Tarea no encontrada" });
     res.json(result.rows[0]);
   } catch (err) {
-    next(err);
-  }
-};
-
-//POST CON LA RUTA /tareas
-export const createTask = async (req, res, next) => {
-  try {
-    const { titutlo, descripcion, estado } = req.body;
-    const result = await pool.query(
-      "INSERT INTO tareas (titulo, descripcion, estado) VALUES ($1, $2, $3) RETURNING *"
-    );
-  } catch (err) {
-    next(err);
+    console.error("Error obteniendo id de la tarea", err.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -43,7 +47,7 @@ export const updateTask = async (req, res, next) => {
     const { id } = req.params;
     const { titulo, descripcion, estado } = req.body;
     const result = await pool.query(
-      "UPDATE tareas SET titulo = $1, descripcion = $2, estado = $3 HWERE id = $4"[
+      "UPDATE tareas SET id = $1, titulo = $2, descripcion = $3 estado = $4"[
         (titulo, descripcion, estado, id)
       ]
     );
