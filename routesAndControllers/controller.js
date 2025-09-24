@@ -49,18 +49,26 @@ export const getTaskById = async (req, res) => {
   }
 };
 
-//PUT CON LA RUTA /tareas/:id
+//Actualizar con la ruta "/tareas/:id"
 export const updateTask = async (req, res) => {
   const { id } = req.params;
+  const { titulo, descripcion, estado } = req.body;
   try {
-    const { titulo, descripcion, estado } = req.body;
+    
     const result = await pool.query(
-      "UPDATE tareas SET id = $1, titulo = $2, descripcion = $3 estado = $4"[
-        (titulo, descripcion, estado, id)
-      ]
+      `UPDATE tareas 
+       SET titulo = COALESCE($1, titulo), 
+           descripcion = COALESCE($2, descripcion)
+           estado = COALESCE($3, estado)
+       RETURNING *`,
+      [titulo, descripcion, estado]
     );
-  } catch (err) {
-    next(err);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Tarea no encontrada" });
+    }
+  } catch (error) {
+    console.error("Error al actualizar la tarea:", error);
+    res.status(500).json({ error: "No se actualizó la tarea", detalle: error.message });
   }
 };
 
