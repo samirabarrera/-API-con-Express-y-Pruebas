@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getTask,
+  getTasks,
   getTaskById,
   createTask,
   updateTask,
@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 //CRUD
-router.get("/", getTask);           
+router.get("/", getTasks);           
 router.get("/:id", getTaskById);
 router.post("/", createTask); 
 router.put("/:id", updateTask);
