@@ -25,13 +25,13 @@ const pruebaConexion = async () => {
 app.use("/tareas", tareasRoutes);
 
 // Ruta 404 para endpoints no encontrados
-app.use((req, res, next) => {
+app.use((req, res) => {
   console.error(err.stack);
   res.status(404).json({ error: "Ruta no encontrada" });
 });
 
 // Middleware
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Error X.X", detalle: err.message });
 });
