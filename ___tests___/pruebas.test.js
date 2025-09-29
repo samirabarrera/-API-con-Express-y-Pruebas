@@ -3,7 +3,6 @@ import app from "../index.js";
 import { pool } from "../db.js";
 
 describe("Pruebas integradas de Tareas", () => {
-
   //Quinta tarea
   test("POST /tareas crea la tarea", async () => {
     const res = await request(app).post("/tareas").send({
@@ -14,7 +13,6 @@ describe("Pruebas integradas de Tareas", () => {
     expect(res.status).toBe(201);
   });
 
- 
   //Sexta tarea
   test("POST /tareas crea la tarea", async () => {
     const res = await request(app).post("/tareas").send({
@@ -25,7 +23,7 @@ describe("Pruebas integradas de Tareas", () => {
 
     expect(res.status).toBe(201);
   });
- 
+
   //Séptima tarea
   test("POST /tareas crea la tarea", async () => {
     const res = await request(app).post("/tareas").send({
@@ -44,17 +42,17 @@ describe("Pruebas integradas de Tareas", () => {
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
 
-    const tareasExistentes = res.body.map(t => t.id);
-    taskIds.forEach(id => {
+    const tareasExistentes = res.body.map((t) => t.id);
+    taskIds.forEach((id) => {
       expect(tareasExistentes).toContain(id);
-    })
+    });
   });
 
   //Obtener tarea por ID
   test("GET /tareas/:id devuelve la tarea por su id", async () => {
     for (let id of taskIds) {
       const res = await request(app).get(`/tareas/${id}`);
-      
+
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty("id", id);
     }
