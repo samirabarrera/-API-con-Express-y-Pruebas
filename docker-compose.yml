@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: "nodejs123"
       POSTGRES_DB: API_express_nodejs
     ports:
-      - "5432:5432"
+      - "8080:30000"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

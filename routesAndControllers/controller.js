@@ -6,7 +6,7 @@ export const createTask = async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO postgres.public.tareas (titulo, descripcion)
-      VALUES ($1, $2)`,
+      VALUES ($1, $2) RETURNING *`,
       [titulo, descripcion]
     );
 
@@ -59,9 +59,10 @@ export const updateTask = async (req, res) => {
       `UPDATE tareas 
        SET titulo = COALESCE($1, titulo), 
            descripcion = COALESCE($2, descripcion),
-           estado = COALESCE($3, estado)
+           estado = COALESCE($3, estado),
+           WHERE id = $4
        RETURNING *`,
-      [titulo, descripcion, estado]
+      [titulo, descripcion, estado, id]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Tarea no encontrada" });
