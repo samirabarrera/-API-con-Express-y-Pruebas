@@ -28,7 +28,7 @@ export const getTasks = async (req, res) => {
     const result = await pool.query("SELECT * FROM tareas");
     res.json(result.rows);
   } catch (err) {
-    console.error("Error al obtener tareas:", err);
+    console.error("Error al obtener tareas:", err.message);
     res.status(500).json({ error: "Error al obtener tareas" });
   }
 };
@@ -58,14 +58,14 @@ export const updateTask = async (req, res) => {
     const result = await pool.query(
       `UPDATE tareas 
        SET titulo = COALESCE($1, titulo), 
-           descripcion = COALESCE($2, descripcion)
+           descripcion = COALESCE($2, descripcion),
            estado = COALESCE($3, estado)
        RETURNING *`,
       [titulo, descripcion, estado]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Tarea no encontrada" });
-    }
+    } res.json({ mensaje: "Tarea actualizada", tarea: result.rows[0] });
   } catch (error) {
     console.error("Error al actualizar la tarea:", error);
     res.status(500).json({ error: "No se actualizó la tarea", detalle: error.message });

@@ -26,14 +26,13 @@ app.use("/tareas", tareasRoutes);
 
 // Ruta 404 para endpoints no encontrados
 app.use((req, res) => {
-  console.error(err.stack);
   res.status(404).json({ error: "Ruta no encontrada" });
 });
 
 // Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Error X.X", detalle: err.message });
+  console.error("Error interno:", err.stack);
+  res.status(500).json({ error: "Error interno del servidor", detalle: err.message });
 });
 
 //Levantar puerto en el servidor
